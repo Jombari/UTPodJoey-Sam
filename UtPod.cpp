@@ -1,5 +1,7 @@
 
 #include "UtPod.h"
+#include "song.h"
+#include "song.cpp"
 
 UtPod::UtPod(void){
   cout << "Object has been created" << endl;
@@ -11,4 +13,8 @@ UtPod::UtPod(int size){
   else{
     memsize = size;
   }
+}
+
+int UtPod::addSong(Song const &s){
+  
 }
