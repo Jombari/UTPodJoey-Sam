@@ -29,6 +29,7 @@ int UtPod::addSong(Song const &s){
 };
 
 int UtPod::removeSong(Song const &s){
+  *tmp = songs;
   
 };
 
