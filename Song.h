@@ -9,6 +9,10 @@
 using namespace std;
 
 class Song {
+
+private:
+    
+    
 public:
     Song(string songTitle, int songSize, string songArtist);
 
