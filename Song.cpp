@@ -2,20 +2,21 @@
 // Created by Samuel Yeboah on 10/28/2018.
 //
 
-#ifndef LAB5_SONG_H
-#define LAB5_SONG_H
+//#ifndef LAB5_SONG_H
+//#define LAB5_SONG_H
 #include <iostream>
 #include <string>
 #include "Song.h"
-using namespace std;
+//using namespace std;
 
-class Song {
+/*class Song {
     private:
     string title;
     string artist;
     int size;
 
 public:
+*/
     Song(string songTitle, int songSize, string songArtist){
         artist = songArtist;
         title = songTitle;
@@ -42,17 +43,17 @@ public:
     void setSongTitle(string song){
         title = song;
     };
-    bool operator ==(Song const &song){
-       return this->artist == song.getArtist() && this->size == song.getMemory() && this->title == song.getTitle();
-    };
-    bool operator <(Song const &song){
-        return this->artist < song.getArtist() && this->title < song.getTitle() && this->size < song.getMemory();
-    };
-
-    bool operator >(Song const &song){
-        return this->artist > song.getArtist() && this->title > song.getTitle() && this->size > song.getMemory();
-    };
+bool operator ==(Song const &song){
+    return this->artist == song.getArtist() && this->size == song.getMemory() && this->title == song.getTitle();
+};
+bool operator <(Song const &song){
+    return this->size < song.getMemory() && this->artist < song.getArtist() && this->title < song.getTitle();
 };
 
+bool operator >(Song const &song){
+    return this->size > song.getMemory() && this->artist > song.getArtist() && this->title > song.getTitle();
+};
+//};
 
-#endif //LAB5_SONG_H
+
+//#endif //LAB5_SONG_H
