@@ -11,7 +11,9 @@ using namespace std;
 class Song {
 
 private:
-    
+    string title;
+    string artist;
+    int size;
     
 public:
 //Default Constructor
