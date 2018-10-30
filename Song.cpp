@@ -46,11 +46,11 @@ public:
        return this->artist == song.getArtist() && this->size == song.getMemory() && this->title == song.getTitle();
     };
     bool operator <(Song const &song){
-        return this->size < song.getMemory() && this->artist < song.getArtist() && this->title < song.getTitle();
+        return this->artist < song.getArtist() && this->title < song.getTitle() && this->size < song.getMemory();
     };
 
     bool operator >(Song const &song){
-        return this->size > song.getMemory() && this->artist > song.getArtist() && this->title > song.getTitle();
+        return this->artist > song.getArtist() && this->title > song.getTitle() && this->size > song.getMemory();
     };
 };
 
