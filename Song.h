@@ -9,7 +9,7 @@
 using namespace std;
 
 class Song {
-
+public:
     Song(string songTitle, int songSize, string songArtist);
 
     string getTitle() const;
@@ -21,6 +21,8 @@ class Song {
     void setArtist(string artistName);
     void setSongTitle(string song);
     bool operator ==(Song const &song);
+    bool operator <(Song const &song);
+    bool operator >(Song const &song);
 };
 
 
