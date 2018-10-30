@@ -16,6 +16,15 @@ UtPod::UtPod(int size){
 };
 
 int UtPod::addSong(Song const &s){
+  SongNode *tmp;
+  tmp ->s = s;
+  if(getRemainingMemory() == getTotalMemory()){
+    tmp -> next = tmp;
+  }
+  else{
+    tmp -> next = songs->next;
+  }
+  songs-> next = tmp;
   
 };
 
