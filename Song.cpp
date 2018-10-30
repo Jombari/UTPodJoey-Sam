@@ -17,32 +17,43 @@
 
 public:
 */
-    Song(string songTitle, int songSize, string songArtist){
+Song::Song(){
+        artist;
+        size = 0;
+        title;
+}
+
+
+Song::Song(string songTitle, int songSize, string songArtist){
         artist = songArtist;
         title = songTitle;
         size = songSize;
-    };
+};
 
-    string getTitle() const{
-        return title;
-    };
+Song::~Song(){
+    
+};
 
-    string getArtist() const{
-        return artist;
-    };
+string Song::getTitle() const{
+    return title;
+};
 
-    int getMemory() const{
-        return size;
-    };
-    void setMemory(int songSize){
-        size = songSize;
-    };
-    void setArtist(string artistName){
-        artist = artistName;
-    };
-    void setSongTitle(string song){
-        title = song;
-    };
+string Song::getArtist() const{
+    return artist;
+};
+
+int Song::getMemory() const{
+    return size;
+};
+void Song::setMemory(int songSize){
+    size = songSize;
+};
+void Song::setArtist(string artistName){
+    artist = artistName;
+};
+void Song::setSongTitle(string song){
+    title = song;
+};
 bool operator ==(Song const &song){
     return this->artist == song.getArtist() && this->size == song.getMemory() && this->title == song.getTitle();
 };
