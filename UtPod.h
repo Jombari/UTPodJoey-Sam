@@ -120,7 +120,7 @@ class UtPod
       */
 
       int getTotalMemory() {
-         return memSize;
+          return memSize;
       }
 
 
