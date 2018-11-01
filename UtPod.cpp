@@ -6,14 +6,11 @@
 #include <ctime>
 #include <cstdlib>
 #include <random>
-
 //Base constructor for UTPod
 // MEmory is 512 MB
 UtPod::UtPod(){
   memSize = 512;
   songs = NULL;
-  srand(time(0));
-
 };
 
 //constructor for UTPod
@@ -27,8 +24,6 @@ UtPod::UtPod(int size){
     memSize = size;
   }
   songs = NULL;
-  srand(time(0));
-
 };
 
 
@@ -55,153 +50,43 @@ int UtPod::addSong(Song const &s){
   return SUCCESS;
 };
 
+
 //Pre-conditions
 //s must be a valid song
 //Post Conditions
 //-2 = song not found or UTpod Empty
 //0 = song deleted
-int UtPod::removeSong(Song const &s){
+int UtPod::removeSong(Song const &s) {
     //temporary node
     SongNode *temp;
     //there are no songs in the list
     // return no songs
-    if(songs == NULL){
+    if (songs == NULL) {
         return NOT_FOUND;
     }
-    //first song is the song to be found
-    else if(songs->s == s){
+        //first song is the song to be found
+    else if (songs->s == s) {
         temp = songs;
         songs = songs->next;
-        delete(temp);
+        delete (temp);
         return SUCCESS;
-    }
-    else{
-    //traverses the linked list to find the specific song
-    //reset the linked list after being traversed
-    SongNode *head = songs;
-    while(songs != NULL){
-        temp = songs;
-        songs = songs->next;
-        if(songs->s == s){
-            temp->next = songs->next;
-            delete(songs);
-            songs = head;
-            return SUCCESS;
+    } else {
+        //traverses the linked list to find the specific song
+        //reset the linked list after being traversed
+        SongNode *p = songs;
+        SongNode *temp = p;
+        p = p->next;
+        while (p != NULL) {
+            if(p->s == s){
+                temp->next = p->next;
+                delete(p);
+                return SUCCESS;
             }
-        }
-        songs = head;
-    }
-  return NOT_FOUND;
-};
-
-void UtPod::shuffle(){
-  Transform(&songs,0);
-
-
-};
-
-
-//Prints the songs to the screen
-void UtPod::showSongList(){
-    //head must be saved after iterating through linked list
-    SongNode *head = songs;
-    while(songs!= NULL){
-        cout<< "\n" << songs->s.getTitle();
-        songs = songs->next;
-    }
-    songs = head;
-    cout << "\n";
-};
-
-void UtPod::sortSongList(){
-
-    Transform(&songs,1);
-    /*int indexOfSmallest;
-    int i;
-    SongNode *head = songs;
-
-
-    SongNode *smallest = songs;
-    for(songs;songs!= NULL;songs = songs->next){
-        SongNode *temp = songs->next;
-        for(temp;temp!=NULL;temp=temp->next){
-            i++;
-            if(smallest->s > temp->s){
-                smallest = temp;
-                indexOfSmallest = i;
-            }
-        }
-        //swap the smallest song into the highest available spot in the linked list
-        Song tempSong(songs->s.getArtist(),songs->s.getTitle(),songs->s.getMemory());
-        songs->s.setArtist(smallest->s.getArtist());
-        songs->s.setSongTitle(smallest->s.getTitle());
-        songs->s.setMemory(smallest->s.getMemory());
-
-        //replace the lovation of the smallest node with new data
-        for(int i = indexOfSmallest;indexOfSmallest>0;i--){
-            songs = songs->next;
-        }
-        songs->s.setMemory(tempSong.getMemory());
-        songs->s.setSongTitle(tempSong.getTitle());
-        songs->s.setArtist(tempSong.getArtist());
+            p = p->next;
+        };
+        return NOT_FOUND;
     };
-
-  songs = head;
-     */
-};
-
-//removes all node from the linked list
-void UtPod::clearMemory(){
-  while(songs!=NULL){
-      SongNode *temp;
-      temp = songs;
-      songs = songs->next;
-      delete(temp);
-  }
-
-
-};
-
-void UtPod::Transform(struct SongNode** headRef,int mode)
-{
-    int option = mode;
-
-    SongNode*  head = *headRef;
-    SongNode* a;
-    SongNode* b;
-
-/* Base case -- length 0 or 1 */
-    if ((head == NULL) || (head->next == NULL))
-    {
-        return;
-    }
-
-/* Split head into 'a' and 'b' sublists */
-    SplitList(head, &a, &b);
-/* Recursively sort the sublists */
-    Transform(&a,mode);
-    Transform(&b,mode);
-
-/* answer = merge the two sorted lists together */
-
-//If mode = 0 then shuffle songs
-//if mode = 1 then sort songs
-    if(mode == 0)
-        *headRef = ShuffledMerge(a, b);
-    else if(mode ==1)
-        *headRef = SortedMerge(a,b);
-};
-//traverses linked list and finds the total amount of usable memory
-int UtPod::getRemainingMemory(){
-    int memory = 0;
-    SongNode *temp = songs;
-    while(temp!=0){
-        memory+= temp->s.getMemory();
-        temp = temp->next;
-    }
-    //returns remaining memory
-    return this->getTotalMemory() - memory;
-};
+}
 
 UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
 {
@@ -228,7 +113,7 @@ UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
 };
 
 UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
-     SongNode* result;
+    SongNode* result;
 
 /* Base cases */
     if (a == NULL)
@@ -275,10 +160,98 @@ void UtPod::SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef)
     slow->next = NULL;
 }
 
+void UtPod::Transform(struct SongNode** headRef,int mode)
+{
+    int option = mode;
+
+    SongNode*  head = *headRef;
+    SongNode* a;
+    SongNode* b;
+
+/* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL))
+    {
+        return;
+    }
+
+/* Split head into 'a' and 'b' sublists */
+    SplitList(head, &a, &b);
+/* Recursively sort the sublists */
+    Transform(&a,mode);
+    Transform(&b,mode);
+
+/* answer = merge the two sorted lists together */
+
+//If mode = 0 then shuffle songs
+//if mode = 1 then sort songs
+    if(mode == 0)
+        *headRef = ShuffledMerge(a, b);
+    else if(mode ==1)
+        *headRef = SortedMerge(a,b);
+};
+
+void UtPod::shuffle(){
+    Transform(&songs,0);
+};
+
+
+//Prints the songs to the screen
+void UtPod::showSongList(){
+    //head must be saved after iterating through linked list
+    SongNode *head = songs;
+    while(songs!= NULL){
+        cout<< "\n" << "Title: " << songs->s.getTitle() << " Artist: " << songs->s.getArtist() << " Size: " << songs->s.getMemory() << " MB";
+        songs = songs->next;
+    }
+    songs = head;
+    cout << "\n";
+};
+
+int UtPod::getNumSongs(){
+    SongNode *head = songs;
+    int count = 0;
+    while(head!=NULL){
+        count++;
+        head = head->next;
+    }
+    return count;
+};
+
+void UtPod::swapSongs(SongNode *s1, SongNode *s2){
+    SongNode *temp = s1;
+    s1->s = s2->s;
+    s2->s = temp->s;
+};
+
+void UtPod::sortSongList(){
+    Transform(&songs,1);
+}
+
+//removes all node from the linked list
+void UtPod::clearMemory(){
+  while(songs!=NULL){
+      SongNode *temp;
+      temp = songs;
+      songs = songs->next;
+      delete(temp);
+  }
+};
+
+//traverses linked list and finds the total amount of usable memory
+int UtPod::getRemainingMemory(){
+    int memory = 0;
+    SongNode *temp = songs;
+    while(temp!=0){
+        memory+= temp->s.getMemory();
+        temp = temp->next;
+    }
+    //returns remaining memory
+    return this->getTotalMemory() - memory;
+};
 //overidden deconstructer
 UtPod::~UtPod() {
     this->clearMemory();
     memSize = 0;
-};
-
+}
+  
   
