@@ -119,12 +119,19 @@ class UtPod
       */
    
       SongNode* ShuffledMerge(SongNode* a, SongNode* b);
+<<<<<<< HEAD
 
       SongNode* SortedMerge(SongNode* a, SongNode* b);
    
       void Transform(struct SongNode** headRef,int mode);
    
       void SplitList( SongNode* source, SongNode** frontRef,  SongNode** backRef);
+=======
+   
+      void shuffle(struct SongNode** headRef);
+   
+      void splitList( SongNode* source, SongNode** frontRef,  SongNode** backRef);
+>>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
 
       int getTotalMemory() {
           return memSize;
