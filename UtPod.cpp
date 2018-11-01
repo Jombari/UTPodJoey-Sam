@@ -6,6 +6,8 @@
 UtPod::UtPod(){
   memSize = 512;
   songs = NULL;
+  srand(time(0));
+
 };
 
 //constructor for UTPod
@@ -19,6 +21,8 @@ UtPod::UtPod(int size){
     memSize = size;
   }
   songs = NULL;
+  srand(time(0));
+
 };
 
 
@@ -85,6 +89,7 @@ int UtPod::removeSong(Song const &s){
 };
 
 void UtPod::shuffle(){
+  shuffle(&songs);
 
 };
 
@@ -145,6 +150,28 @@ void UtPod::clearMemory(){
   }
 };
 
+void UtPod::shuffle(struct SongNode** headRef)
+{
+    SongNode*  head = *headRef;
+    SongNode* a;
+    SongNode* b;
+
+/* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL))
+    {
+        return;
+    }
+
+/* Split head into 'a' and 'b' sublists */
+    SplitList(head, &a, &b);
+
+/* Recursively sort the sublists */
+    shuffle(&a);
+    shuffle(&b);
+
+/* answer = merge the two sorted lists together */
+    *headRef = ShuffledMerge(a, b);
+};
 //traverses linked list and finds the total amount of usable memory
 int UtPod::getRemainingMemory(){
     int memory = 0;
@@ -157,10 +184,58 @@ int UtPod::getRemainingMemory(){
     return this->getTotalMemory() - memory;
 };
 
+UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
+{
+    SongNode* result = NULL;
+
+/* Base cases */
+    if (a == NULL)
+        return(b);
+    else if (b==NULL)
+        return(a);
+
+/* Pick either a or b, and recur */
+    if (rand()%2 == 0)
+    {
+        result = a;
+        result->next = ShuffledMerge(a->next, b);
+    }
+    else
+    {
+        result = b;
+        result->next = ShuffledMerge(a, b->next);
+    }
+    return(result);
+};
+
+void UtPod::SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef) {
+    SongNode* fast;
+    SongNode* slow;
+    slow = source;
+    fast = source->next;
+
+    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    while (fast != NULL)
+    {
+        fast = fast->next;
+        if (fast != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    /* 'slow' is before the midpoint in the list, so split it in two
+    at that point. */
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
 //overidden deconstructer
 UtPod::~UtPod() {
     this->clearMemory();
     memSize = 0;
-}
+};
   
   
