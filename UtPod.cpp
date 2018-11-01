@@ -1,11 +1,19 @@
 
 #include "UtPod.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
+#include <random>
+
 //Base constructor for UTPod
 // MEmory is 512 MB
 UtPod::UtPod(){
   memSize = 512;
   songs = NULL;
+  srand(time(0));
+
 };
 
 //constructor for UTPod
@@ -19,6 +27,8 @@ UtPod::UtPod(int size){
     memSize = size;
   }
   songs = NULL;
+  srand(time(0));
+
 };
 
 
@@ -68,7 +78,7 @@ int UtPod::removeSong(Song const &s){
     else{
     //traverses the linked list to find the specific song
     //reset the linked list after being traversed
-    SongNode *head;
+    SongNode *head = songs;
     while(songs != NULL){
         temp = songs;
         songs = songs->next;
@@ -85,6 +95,7 @@ int UtPod::removeSong(Song const &s){
 };
 
 void UtPod::shuffle(){
+  Transform(&songs,0);
 
 };
 
@@ -102,7 +113,9 @@ void UtPod::showSongList(){
 };
 
 void UtPod::sortSongList(){
-    int indexOfSmallest;
+
+    Transform(&songs,1);
+    /*int indexOfSmallest;
     int i;
     SongNode *head = songs;
 
@@ -132,25 +145,8 @@ void UtPod::sortSongList(){
         songs->s.setArtist(tempSong.getArtist());
     };
 
-//
-//  while(songs!= NULL){
-//      // temporary node for sort comparison
-//      SongNode *temp = new SongNode;
-//      temp = songs->next;
-//      while(temp!= NULL){
-//         biggest = songs;
-//          if(biggest->s < temp->s){
-//              biggest = temp;
-//          }
-//          //removes the biggest song from the list
-//          // once found
-//          int placeholder = this->removeSong(biggest->s);
-//      }
-//      //adds the biggest song in reverse order so the smallest is at the head
-//      int placholder = this->addSong(biggest->s);
-//      songs = songs->next;
-//  }
   songs = head;
+     */
 };
 
 //removes all node from the linked list
@@ -161,8 +157,38 @@ void UtPod::clearMemory(){
       songs = songs->next;
       delete(temp);
   }
+
+
 };
 
+void UtPod::Transform(struct SongNode** headRef,int mode)
+{
+    int option = mode;
+    SongNode*  head = *headRef;
+    SongNode* a;
+    SongNode* b;
+
+/* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL))
+    {
+        return;
+    }
+
+/* Split head into 'a' and 'b' sublists */
+    SplitList(head, &a, &b);
+/* Recursively sort the sublists */
+    Transform(&a,mode);
+    Transform(&b,mode);
+
+/* answer = merge the two sorted lists together */
+
+//If mode = 0 then shuffle songs
+//if mode = 1 then sort songs
+    if(mode == 0)
+        *headRef = ShuffledMerge(a, b);
+    else if(mode ==1)
+        *headRef = SortedMerge(a,b);
+};
 //traverses linked list and finds the total amount of usable memory
 int UtPod::getRemainingMemory(){
     int memory = 0;
@@ -175,10 +201,83 @@ int UtPod::getRemainingMemory(){
     return this->getTotalMemory() - memory;
 };
 
+UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
+{
+    SongNode* result = NULL;
+
+/* Base cases */
+    if (a == NULL)
+        return(b);
+    else if (b==NULL)
+        return(a);
+
+/* Pick either a or b, and recur */
+    if (rand()%2 == 0)
+    {
+        result = a;
+        result->next = ShuffledMerge(a->next, b);
+    }
+    else
+    {
+        result = b;
+        result->next = ShuffledMerge(a, b->next);
+    }
+    return(result);
+};
+
+UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
+     SongNode* result;
+
+/* Base cases */
+    if (a == NULL)
+        return(b);
+    else if (b==NULL)
+        return(a);
+
+/* Pick either a or b, and recur */
+    if (a->s < b->s)
+    {
+        result = a;
+        result->next = SortedMerge(a->next, b);
+    }
+    else
+    {
+        result = b;
+        result->next = SortedMerge(a, b->next);
+    }
+    return(result);
+
+};
+
+void UtPod::SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef) {
+    SongNode* fast;
+    SongNode* slow;
+    slow = source;
+    fast = source->next;
+
+    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    while (fast != NULL)
+    {
+        fast = fast->next;
+        if (fast != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    /* 'slow' is before the midpoint in the list, so split it in two
+    at that point. */
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
 //overidden deconstructer
 UtPod::~UtPod() {
     this->clearMemory();
     memSize = 0;
-}
+};
+
   
   

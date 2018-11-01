@@ -49,11 +49,37 @@ using namespace std;
     };
 
     bool Song::operator <(Song const &song) {
-        return this->artist < song.getArtist() || this->title < song.getTitle() || this->size < song.getMemory();
+        if(this->artist<song.getArtist()){
+            return true;
+        }
+        if(this->artist == song.getArtist()){
+            if(this->title < song.getTitle()){
+                return true;
+            }
+            else if(this->title == song.getTitle()){
+                if(this->getMemory() < song.getMemory()){
+                    return true;
+                }
+            }
+        }
+        return false;
     };
 
     bool Song::operator >(Song const &song) {
-        return this->artist > song.getArtist() || this->title > song.getTitle() || this->size > song.getMemory();
+        if(this->artist>song.getArtist()){
+            return true;
+        }
+        if(this->artist == song.getArtist()){
+            if(this->title > song.getTitle()){
+                return true;
+            }
+            else if(this->title == song.getTitle()){
+                if(this->getMemory() > song.getMemory()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     Song::~Song() {
