@@ -88,9 +88,9 @@ int main(int argc, char *argv[])
     Song s8("Kanye", "All of the Lights", 5);
     Song s9("Kanye", "Love Lockdown", 6);
     Song s10("Kanye", "Bounded", 7);
-    Song s11("drake", "Marvins Room", 8);
-    Song s13("sheq wes", "Mo Bamba", 9);
-    Song s14("drake", "More Life", 9);
+    Song s11("Drake", "Marvins Room", 8);
+    Song s13("Sheq wes", "Mo Bamba", 9);
+    Song s14("Drake", "More Life", 9);
     Song s15("Kendrick Lamar", "Sherane AKA Master Splinters Daughter", 9);
     Song s16("J cole", "Wet Dreamz", 9);
 
