@@ -21,6 +21,7 @@ UtPod::UtPod(int size){
   songs = NULL;
 };
 
+
 //Pre-Conditions
 //The UTPOD must have accurate memory
 //s must be a real song
@@ -87,6 +88,7 @@ void UtPod::shuffle(){
 
 };
 
+
 //Prints the songs to the screen
 void UtPod::showSongList(){
     //head must be saved after iterating through linked list
@@ -100,24 +102,55 @@ void UtPod::showSongList(){
 };
 
 void UtPod::sortSongList(){
-    SongNode *biggest;
-  while(songs!= NULL){
-      // temporary node for sort comparison
-      SongNode *temp = new SongNode;
-      temp = songs->next;
-      while(temp!= NULL){
-         biggest = songs;
-          if(biggest->s < temp->s){
-              biggest = temp;
-          }
-          //removes the biggest song from the list
-          // once found
-          int placeholder = this->removeSong(biggest->s);
-      }
-      //adds the biggest song in reverse order so the smallest is at the head
-      int placholder = this->addSong(biggest->s);
-      songs = songs->next;
-  }
+    int indexOfSmallest;
+    int i;
+    SongNode *head = songs;
+
+
+    SongNode *smallest = songs;
+    for(songs;songs!= NULL;songs = songs->next){
+        SongNode *temp = songs->next;
+        for(temp;temp!=NULL;temp=temp->next){
+            i++;
+            if(smallest->s > temp->s){
+                smallest = temp;
+                indexOfSmallest = i;
+            }
+        }
+        //swap the smallest song into the highest available spot in the linked list
+        Song tempSong(songs->s.getArtist(),songs->s.getTitle(),songs->s.getMemory());
+        songs->s.setArtist(smallest->s.getArtist());
+        songs->s.setSongTitle(smallest->s.getTitle());
+        songs->s.setMemory(smallest->s.getMemory());
+
+        //replace the lovation of the smallest node with new data
+        for(int i = indexOfSmallest;indexOfSmallest>0;i--){
+            songs = songs->next;
+        }
+        songs->s.setMemory(tempSong.getMemory());
+        songs->s.setSongTitle(tempSong.getTitle());
+        songs->s.setArtist(tempSong.getArtist());
+    };
+
+//
+//  while(songs!= NULL){
+//      // temporary node for sort comparison
+//      SongNode *temp = new SongNode;
+//      temp = songs->next;
+//      while(temp!= NULL){
+//         biggest = songs;
+//          if(biggest->s < temp->s){
+//              biggest = temp;
+//          }
+//          //removes the biggest song from the list
+//          // once found
+//          int placeholder = this->removeSong(biggest->s);
+//      }
+//      //adds the biggest song in reverse order so the smallest is at the head
+//      int placholder = this->addSong(biggest->s);
+//      songs = songs->next;
+//  }
+  songs = head;
 };
 
 //removes all node from the linked list
