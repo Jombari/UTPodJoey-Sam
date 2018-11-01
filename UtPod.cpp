@@ -1,6 +1,12 @@
 
 #include "UtPod.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
+#include <random>
+
 //Base constructor for UTPod
 // MEmory is 512 MB
 UtPod::UtPod(){
