@@ -68,7 +68,7 @@ int UtPod::removeSong(Song const &s){
     else{
     //traverses the linked list to find the specific song
     //reset the linked list after being traversed
-    SongNode *head;
+    SongNode *head = songs;
     while(songs != NULL){
         temp = songs;
         songs = songs->next;
@@ -132,24 +132,6 @@ void UtPod::sortSongList(){
         songs->s.setArtist(tempSong.getArtist());
     };
 
-//
-//  while(songs!= NULL){
-//      // temporary node for sort comparison
-//      SongNode *temp = new SongNode;
-//      temp = songs->next;
-//      while(temp!= NULL){
-//         biggest = songs;
-//          if(biggest->s < temp->s){
-//              biggest = temp;
-//          }
-//          //removes the biggest song from the list
-//          // once found
-//          int placeholder = this->removeSong(biggest->s);
-//      }
-//      //adds the biggest song in reverse order so the smallest is at the head
-//      int placholder = this->addSong(biggest->s);
-//      songs = songs->next;
-//  }
   songs = head;
 };
 
