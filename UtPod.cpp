@@ -165,14 +165,10 @@ void UtPod::clearMemory(){
 
 };
 
-<<<<<<< HEAD
 void UtPod::Transform(struct SongNode** headRef,int mode)
 {
     int option = mode;
-=======
-void UtPod::shuffle(struct SongNode** headRef)
-{
->>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
+
     SongNode*  head = *headRef;
     SongNode* a;
     SongNode* b;
@@ -198,15 +194,6 @@ void UtPod::shuffle(struct SongNode** headRef)
         *headRef = ShuffledMerge(a, b);
     else if(mode ==1)
         *headRef = SortedMerge(a,b);
-=======
-
-/* Recursively sort the sublists */
-    shuffle(&a);
-    shuffle(&b);
-
-/* answer = merge the two sorted lists together */
-    *headRef = ShuffledMerge(a, b);
->>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
 };
 //traverses linked list and finds the total amount of usable memory
 int UtPod::getRemainingMemory(){
@@ -269,8 +256,6 @@ UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
 
 };
 
-=======
->>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
 void UtPod::SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef) {
     SongNode* fast;
     SongNode* slow;
@@ -300,9 +285,5 @@ UtPod::~UtPod() {
     this->clearMemory();
     memSize = 0;
 };
-<<<<<<< HEAD
 
-=======
->>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
-  
   
