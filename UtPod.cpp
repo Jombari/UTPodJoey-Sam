@@ -1,12 +1,16 @@
 
 #include "UtPod.h"
 #include <iostream>
-
+//Base constructor for UTPod
+// MEmory is 512 MB
 UtPod::UtPod(){
-  memSize = 0;
-  SongNode *next = NULL;
+  memSize = 512;
+  songs = NULL;
 };
 
+//constructor for UTPod
+//Memory is 512 MB
+// or user input
 UtPod::UtPod(int size){
   if((size>MAX_MEMORY) || (size <= 0)){
    memSize = MAX_MEMORY;
@@ -14,13 +18,20 @@ UtPod::UtPod(int size){
   else{
     memSize = size;
   }
+  songs = NULL;
 };
 
+//Pre-Conditions
+//The UTPOD must have accurate memory
+//s must be a real song
+//Post-Conditions
+// 0 = the song was added to the linked list
+// -1 = there was not eneough memory in the utpod
 int UtPod::addSong(Song const &s){
-    //Checks to see if there is space for the
-  if(s.getMemory() > this->getTotalMemory() - this->getRemainingMemory()){
-      return NO_MEMORY;
-  }
+    // checks to see if the song takes up to much space
+    if(s.getMemory()> this->getRemainingMemory()){
+        return NO_MEMORY;
+    }
   //Creates a new node to be added to the array
   SongNode *temp = new SongNode;
   temp->s.setArtist(s.getArtist());
@@ -28,16 +39,26 @@ int UtPod::addSong(Song const &s){
   temp->s.setSongTitle(s.getTitle());
 
   //Adds the node to the array
-  temp->next = songs;
+  temp->next = this->songs;
   songs = temp;
   return SUCCESS;
 };
 
+//Pre-conditions
+//s must be a valid song
+//Post Conditions
+//-2 = song not found or UTpod Empty
+//0 = song deleted
 int UtPod::removeSong(Song const &s){
     //temporary node
-    SongNode *temp = new SongNode;
-    //first case for if the first node is the correct song;
-    if(songs->s == s){
+    SongNode *temp;
+    //there are no songs in the list
+    // return no songs
+    if(songs == NULL){
+        return NOT_FOUND;
+    }
+    //first song is the song to be found
+    else if(songs->s == s){
         temp = songs;
         songs = songs->next;
         delete(temp);
@@ -45,15 +66,19 @@ int UtPod::removeSong(Song const &s){
     }
     else{
     //traverses the linked list to find the specific song
-    while(songs!= NULL){
+    //reset the linked list after being traversed
+    SongNode *head;
+    while(songs != NULL){
         temp = songs;
         songs = songs->next;
         if(songs->s == s){
             temp->next = songs->next;
             delete(songs);
+            songs = head;
             return SUCCESS;
             }
         }
+        songs = head;
     }
   return NOT_FOUND;
 };
@@ -62,12 +87,16 @@ void UtPod::shuffle(){
 
 };
 
+//Prints the songs to the screen
 void UtPod::showSongList(){
+    //head must be saved after iterating through linked list
+    SongNode *head = songs;
     while(songs!= NULL){
-        cout << songs->s.getTitle();
-        cout << "/n";
+        cout<< "\n" << songs->s.getTitle();
         songs = songs->next;
     }
+    songs = head;
+    cout << "\n";
 };
 
 void UtPod::sortSongList(){
@@ -91,27 +120,32 @@ void UtPod::sortSongList(){
   }
 };
 
+//removes all node from the linked list
 void UtPod::clearMemory(){
   while(songs!=NULL){
-      SongNode *temp = new SongNode;
+      SongNode *temp;
       temp = songs;
       songs = songs->next;
       delete(temp);
   }
 };
 
+//traverses linked list and finds the total amount of usable memory
 int UtPod::getRemainingMemory(){
-    //traverses linked list and finds the total amount of currrent memory
     int memory = 0;
-    while(songs!= NULL){
-        memory+= songs->s.getMemory();
+    SongNode *temp = songs;
+    while(temp!=0){
+        memory+= temp->s.getMemory();
+        temp = temp->next;
     }
     //returns remaining memory
     return this->getTotalMemory() - memory;
 };
 
+//overidden deconstructer
 UtPod::~UtPod() {
     this->clearMemory();
+    memSize = 0;
 }
   
   
