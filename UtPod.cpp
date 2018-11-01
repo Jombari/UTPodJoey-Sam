@@ -95,11 +95,8 @@ int UtPod::removeSong(Song const &s){
 };
 
 void UtPod::shuffle(){
-<<<<<<< HEAD
   Transform(&songs,0);
-=======
-  shuffle(&songs);
->>>>>>> 87ae45df8a1967812c90b0e268f4f7f248c4df9c
+
 
 };
 
@@ -181,7 +178,6 @@ void UtPod::Transform(struct SongNode** headRef,int mode)
 
 /* Split head into 'a' and 'b' sublists */
     SplitList(head, &a, &b);
-<<<<<<< HEAD
 /* Recursively sort the sublists */
     Transform(&a,mode);
     Transform(&b,mode);
@@ -231,7 +227,6 @@ UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
     return(result);
 };
 
-<<<<<<< HEAD
 UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
      SongNode* result;
 
