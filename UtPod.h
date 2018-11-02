@@ -23,8 +23,27 @@ class UtPod
       
       SongNode *songs;  //the head pointer
       int memSize;
-   
-   public:
+
+
+    //Transform performs either a MergeSort transformation on a linked list, or does a mergeShuffle
+    //Options:
+    //Mode = 0 ==> shuffle
+    //Mode = 1 ==> sort
+    void Transform(struct SongNode** headRef,int mode);
+
+    //called by Transform (mode =  1)
+    //Shuffles a SongNode linked list  using a  mergesort type method.
+    SongNode* ShuffledMerge(SongNode* list1, SongNode* list2);
+
+    //called by Transform (mode =  1)
+    //Shuffles a SongNode linked list  using a  mergesort type method.
+    SongNode* SortedMerge(SongNode* list1, SongNode* list2);
+
+    //Splitlist splits a SongNode Linkedlist into 2 parts over and over until only 1 element. Split part of a mergesort
+    void SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef);
+
+
+public:
       //Default constructor
       //set the memory size to MAX_MEMORY
       UtPod();
@@ -134,13 +153,26 @@ class UtPod
          output parms -
       */
 
+      //gets memory remaining  in UtPod
       int getRemainingMemory();
+
+      //Gets total songs stored on the UtPod
     int getNumSongs();
+
+    //Swaps two songs places on the list
     void swapSongs(SongNode *s1, SongNode *s2);
-    void Transform(struct SongNode** headRef,int mode);
-    SongNode* ShuffledMerge(SongNode* a, SongNode* b);
-    SongNode* SortedMerge(SongNode* a, SongNode* b);
-    void SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef);
+
+
+
+
+    //SongNode* ShuffledMerge(SongNode* list1, SongNode* list2);
+
+    //called by Transform (mode =  1)
+    //Shuffles a SongNode linked list  using a  mergesort type method.
+  //  SongNode* SortedMerge(SongNode* list1, SongNode* list2);
+
+    //Splitlist splits a SongNode Linkedlist into 2 parts over and over until only 1 element. Split part of a mergesort
+    //void SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef);
       ~UtPod();
  
 };

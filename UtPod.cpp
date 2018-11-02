@@ -83,111 +83,111 @@ int UtPod::removeSong(Song const &s) {
                 return SUCCESS;
             }
             p = p->next;
-	    temp=temp->next;
+            temp=temp->next;
         };
         return NOT_FOUND;
     };
 }
 
-UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
+//Merges a linked list in an unordered random configuration
+UtPod::SongNode* UtPod::ShuffledMerge(SongNode* list1, SongNode* list2)
 {
     SongNode* result = NULL;
 
-/* Base cases */
-    if (a == NULL)
-        return(b);
-    else if (b==NULL)
-        return(a);
+//if list empty return
+    if (list1 == NULL)
+        return(list2);
+    else if (list2==NULL)
+        return(list1);
 
-/* Pick either a or b, and recur */
+    //Randomly  pick a list to pull its values and add to main Song list
     if (rand()%2 == 0)
     {
-        result = a;
-        result->next = ShuffledMerge(a->next, b);
+        result = list1;
+        result->next = ShuffledMerge(list1->next, list2);
     }
     else
     {
-        result = b;
-        result->next = ShuffledMerge(a, b->next);
+        result = list2;
+        result->next = ShuffledMerge(list1, list2->next);
     }
     return(result);
 };
 
-UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
+//Mergesorts a linked list
+UtPod::SongNode* UtPod::SortedMerge(SongNode* list1, SongNode* list2){
     SongNode* result;
-/* Base cases */
-    if (a == NULL)
-        return(b);
-    else if (b==NULL)
-        return(a);
+    //if list empty return
+    if (list1 == NULL)
+        return(list2);
+    else if (list2==NULL)
+        return(list1);
 
-/* Pick either a or b, and recur */
-    if (a->s < b->s)
+    //Pick whichever list has a smaller head value and append it to the  start of the main list
+    if (list1->s < list2->s)
     {
-        result = a;
-        result->next = SortedMerge(a->next, b);
+        result = list1;
+        result->next = SortedMerge(list1->next, list2);
     }
     else
     {
-        result = b;
-        result->next = SortedMerge(a, b->next);
+        result = list2;
+        result->next = SortedMerge(list1, list2->next);
     }
     return(result);
 
 };
+//Splits a linked list into two halves
+void UtPod::SplitList(SongNode* source, SongNode** startRef, SongNode** endRef) {
+    SongNode* list1;
+    SongNode* list2;
+    list2 = source;
+    list1 = source->next;
 
-void UtPod::SplitList(SongNode* source, SongNode** frontRef, SongNode** backRef) {
-    SongNode* fast;
-    SongNode* slow;
-    slow = source;
-    fast = source->next;
-
-    /* Advance 'fast' two nodes, and advance 'slow' one node */
-    while (fast != NULL)
+    while (list1 != NULL)
     {
-        fast = fast->next;
-        if (fast != NULL)
+        list1 = list1->next;
+        if (list1 != NULL)
         {
-            slow = slow->next;
-            fast = fast->next;
+            list2 = list2->next;
+            list1 = list1->next;
         }
     }
 
-    /* 'slow' is before the midpoint in the list, so split it in two
-    at that point. */
-    *frontRef = source;
-    *backRef = slow->next;
-    slow->next = NULL;
+
+    *startRef = source;
+    *endRef = list2->next;
+    list2->next = NULL;
 }
 
 void UtPod::Transform(struct SongNode** headRef,int mode)
 {
     int option = mode;
 
-    SongNode*  head = *headRef;
-    SongNode* a;
-    SongNode* b;
+    SongNode*  headPtr = *headRef;
+    SongNode* list1;
+    SongNode* list2;
 
-/* Base case -- length 0 or 1 */
-    if ((head == NULL) || (head->next == NULL))
+    //if 0 or 1  element return
+    if ((headPtr == NULL) || (headPtr->next == NULL))
     {
         return;
     }
 
-/* Split head into 'a' and 'b' sublists */
-    SplitList(head, &a, &b);
+    SplitList(headPtr, &list1, &list2);
+
 /* Recursively sort the sublists */
-    Transform(&a,mode);
-    Transform(&b,mode);
+    Transform(&list1,mode);
+    Transform(&list2,mode);
 
 /* answer = merge the two sorted lists together */
 
 //If mode = 0 then shuffle songs
 //if mode = 1 then sort songs
     if(mode == 0)
-        *headRef = ShuffledMerge(a, b);
+        *headRef = ShuffledMerge(list1, list2);
     else if(mode ==1)
-        *headRef = SortedMerge(a,b);
+        *headRef = SortedMerge(list1,list2);
 };
 
 void UtPod::shuffle(){
