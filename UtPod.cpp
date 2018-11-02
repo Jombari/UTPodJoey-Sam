@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <ctime>
 #include <cstdlib>
-#include <random>
+//#include <random>
 //Base constructor for UTPod
 // MEmory is 512 MB
 UtPod::UtPod(){
@@ -83,6 +83,7 @@ int UtPod::removeSong(Song const &s) {
                 return SUCCESS;
             }
             p = p->next;
+	    temp=temp->next;
         };
         return NOT_FOUND;
     };
@@ -114,7 +115,6 @@ UtPod::SongNode* UtPod::ShuffledMerge(SongNode* a, SongNode* b)
 
 UtPod::SongNode* UtPod::SortedMerge(SongNode* a, SongNode* b){
     SongNode* result;
-
 /* Base cases */
     if (a == NULL)
         return(b);

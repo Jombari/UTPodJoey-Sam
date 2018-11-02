@@ -4,6 +4,8 @@
 #define UTPOD_H
 #include "Song.h"
 
+using namespace std;
+
 //UtPod class declaration
 class UtPod
 {
